@@ -37,7 +37,7 @@ function catalogLength(e, f = filters) {
 
 function maxBookingGuests(e) {
   const sizes = e.group.match(/\d+/g) || ['1'];
-  return Math.min(4, Number(sizes.at(-1)));
+  return Number(sizes.at(-1));
 }
 
 function guestLabel(count) {
@@ -73,6 +73,8 @@ function initBooking(e) {
   selectedDuration = catalogLength(e);
   selectedDate = '';
   guestCount = 1;
+  extras = [];
+  bookingNote = '';
   calendarMonth = null;
 }
 
@@ -106,7 +108,6 @@ function bookingFields(e) {
 
 function detailBookingCard(e) {
   return `<aside class="detail-booking" id="booking-card">
-    <button class="booking-close" type="button" data-close-booking aria-label="Close booking details">×</button>
     <div class="booking-head"><strong id="detail-price"></strong> <span>per person</span></div>
     ${bookingFields(e)}
     <div class="booking-breakdown" id="booking-price" aria-live="polite"></div>
@@ -143,13 +144,13 @@ function checkout(e, mode) {
           <p class="checkout-error" id="booking-error" role="status"></p>
           <div class="form-group">
             <label for="booking-note">Note to your host <span class="muted">· optional</span></label>
-            <textarea id="booking-note" name="message" rows="2" maxlength="500" placeholder="Anything you’d like your host to know?"></textarea>
+            <textarea id="booking-note" name="message" rows="2" maxlength="500" placeholder="Anything you’d like your host to know?">${esc(bookingNote)}</textarea>
           </div>
           <p class="muted checkout-note">Booking as Alex Morgan (demo guest).</p>
         </div>
-        <details class="form-card">
+        <details class="form-card" ${extras.length ? 'open' : ''}>
           <summary>Optional extras</summary>
-          ${Object.entries(bookingExtras).map(([value, name]) => `<label class="extra-option"><span class="extra-name"><input type="checkbox" data-extra="${value}"><span>${name}</span></span><span class="extra-price">+${euro(Number(value))}<small>per guest</small></span></label>`).join('')}
+          ${Object.entries(bookingExtras).map(([value, name]) => `<label class="extra-option"><span class="extra-name"><input type="checkbox" data-extra="${value}" ${extras.includes(value) ? 'checked' : ''}><span>${name}</span></span><span class="extra-price">+${euro(Number(value))}<small>per guest</small></span></label>`).join('')}
         </details>
         <details class="form-card">
           <summary>What’s included and cancellation</summary>
@@ -163,6 +164,7 @@ function checkout(e, mode) {
         <div class="booking-breakdown" id="booking-price" aria-live="polite"></div>
         <button class="btn" type="submit">${instant ? 'Confirm demo booking' : 'Send sample request'}</button>
         <p class="muted checkout-note">${instant ? 'Confirmed immediately in this browser. No payment is taken.' : 'No real request or payment is sent. You can simulate the host’s reply in Host view.'}</p>
+        <button class="text-button" type="button" data-booking-mode="${instant ? 'request' : 'instant'}">${instant ? 'Request to book instead' : 'Book instantly instead'}</button>
       </aside>
     </form>
   </main>`;
@@ -207,6 +209,7 @@ function completeCheckout(form, data) {
   }) - 1;
   save();
   activeBookingId = 0;
+  bookingNote = '';
   to(`journey/${index}`);
 }
 

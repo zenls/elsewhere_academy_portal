@@ -21,6 +21,7 @@ Any static web server or editor's live-server extension can be used instead. Nav
 
 - `dist/index.html` — page shell, navigation and script references.
 - `dist/app.js` — screen templates, navigation and interaction logic.
+- `dist/booking.js` — demo availability, price calculation, checkout and trip list.
 - `dist/data.js` — experience listings, host names, descriptions, prices and associated images.
 - `dist/app.css` — the site's styles and responsive layouts.
 - `dist/assets/` — included photos and other visual assets.
@@ -28,7 +29,9 @@ Any static web server or editor's live-server extension can be used instead. Nav
 
 ## Prototype behaviour and next steps
 
-This is a front-end prototype. Hosts, listings, reviews, availability, verification and prices are sample content. Forms, booking requests, messages and payments are simulations; no real booking or payment service is connected. Some interaction state is saved in the visitor's browser using local storage, rather than in a shared account or database. Data in one browser will not automatically appear in another.
+This is a front-end prototype. Hosts, listings, reviews, availability, verification and prices are sample content. In Discover, open an experience and choose **Book instantly** to see the short checkout and immediate demo confirmation. **Request to book instead** leaves the trip waiting for a response; use Host view to simulate accepting or declining it. **Your trips** lists the saved demo bookings and lets you cancel them or withdraw pending requests. Confirmed bookings use places in the demo calendar; cancellation releases them.
+
+No real booking, notification, payment or refund takes place. Trip data is saved in the visitor's browser using local storage, not in a shared account or database.
 
 A developer can edit the files directly and deploy the contents of `dist/` to a static hosting provider. A production service would require additional work on accounts, a database, booking and payment integrations, host verification, accessibility, security, and real content.
 
