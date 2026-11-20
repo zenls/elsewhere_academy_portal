@@ -30,9 +30,17 @@ function quote(e, length, guests, addOns = []) {
   return {unit, base, items, total: base + items.reduce((sum, item) => sum + item.price, 0)};
 }
 
+function availableCatalogLength(e, f) {
+  const guests = Number(f.guests || 1);
+  if (guests > maxBookingGuests(e)) return undefined;
+  const lengths = e.days.filter(n => !f.duration || n === Number(f.duration)).sort((a, b) => a - b);
+  return f.month || guests > 1
+    ? lengths.find(n => firstBookingDay(e, n, guests, f.month))
+    : lengths[0];
+}
+
 function catalogLength(e, f = filters) {
-  const length = Number(f.duration);
-  return e.days.includes(length) ? length : Math.min(...e.days);
+  return availableCatalogLength(e, f) ?? Math.min(...e.days);
 }
 
 function maxBookingGuests(e) {
@@ -59,6 +67,7 @@ function bookingSlot(e, day, length, guests, window = bookingWindow()) {
 }
 
 function firstBookingDay(e, length, guests, month = '') {
+  if (guests > maxBookingGuests(e) || (month && !e.months.includes(month))) return null;
   const window = bookingWindow();
   for (const day = new Date(window.first); day <= window.last; day.setDate(day.getDate() + 1)) {
     if ((!month || monthOptions[day.getMonth()] === month) &&
@@ -72,7 +81,7 @@ function initBooking(e) {
   activeBookingId = e.id;
   selectedDuration = catalogLength(e);
   selectedDate = '';
-  guestCount = 1;
+  guestCount = Math.min(Number(filters.guests || 1), maxBookingGuests(e));
   extras = [];
   bookingNote = '';
   calendarMonth = null;

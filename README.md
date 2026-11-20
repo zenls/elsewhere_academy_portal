@@ -22,14 +22,16 @@ Any static web server or editor's live-server extension can be used instead. Nav
 - `dist/index.html` — page shell, navigation and script references.
 - `dist/app.js` — screen templates, navigation and interaction logic.
 - `dist/booking.js` — demo availability, price calculation, checkout and trip list.
-- `dist/data.js` — experience listings, host names, descriptions, prices and associated images.
+- `dist/data.js` — experience listings, host names, prices, images, approximate locations and fictional sample reviews.
 - `dist/app.css` — the site's styles and responsive layouts.
-- `dist/assets/` — included photos and other visual assets.
+- `dist/assets/` — included photos and other visual assets. The local world outline is simplified from [Natural Earth 1:110m land](https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/) (public domain).
 - `dist/credits.html` — existing photo attribution and source references. Review individual image licenses and permissions before further publication or commercial use. Some site imagery and maps may still use external URLs and require internet access.
 
 ## Prototype behaviour and next steps
 
 This is a front-end prototype. Hosts, listings, reviews, availability, verification and prices are sample content. In Discover, open an experience and choose **Book instantly** to see the short checkout and immediate demo confirmation. **Request to book instead** leaves the trip waiting for a response; use Host view to simulate accepting or declining it. **Your trips** lists the saved demo bookings and lets you cancel them or withdraw pending requests. Confirmed bookings use places in the demo calendar; cancellation releases them.
+
+Use **Where / When / Guests** on the home page to find a demo start by destination, month and party size. Discover's map uses approximate city or region centres; markers with a number show groups of nearby listings. Sample ratings and reviews are labelled and do not represent actual guests or verified hosts.
 
 No real booking, notification, payment or refund takes place. Trip data is saved in the visitor's browser using local storage, not in a shared account or database.
 
